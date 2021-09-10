@@ -1,18 +1,18 @@
 const express=require('express');
 const mongoose =require('mongoose');
 const bodyParser=require('body-parser');
-const leaderRouter=express.Router()
-leaderRouter.use(bodyParser.json());
-const leaderes =require('../models/leaders')
+const promoRouter=express.Router()
+promoRouter.use(bodyParser.json());
+const promoes =require('../models/promos')
 
 
-leaderRouter.route('/')
+promoRouter.route('/')
 .get((req,res,next)=> {
-    leaderes.find({})
-    .then((leaderes) => {
+    promoes.find({})
+    .then((promoes) => {
         res.statusCode =200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(leaderes)
+        res.json(promoes)
     },(err) => next(err))
     .catch((err) => next(err));
 })
@@ -21,17 +21,17 @@ leaderRouter.route('/')
     res.end('PUT operation not supported');
 })
 .post((req,res,next) => {
-    leaderes.create(req.body)
-    .then((leader) => {
-        console.log('leader Created ',leader);
+    promoes.create(req.body)
+    .then((promo) => {
+        console.log('promo Created ',promo);
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(leader);
+        res.json(promo);
     }, (err) => {next(err)})
     .catch((err)=> {next(err)});
 })
 .delete((req,res,next)=> {
-    leaderes.remove()
+    promoes.remove()
     .then((resp) => {
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
@@ -41,13 +41,13 @@ leaderRouter.route('/')
 })
 
 
-leaderRouter.route('/:leaderId')
+promoRouter.route('/:promoId')
 .get((req,res,next)=> {
-    leaderes.findById(req.params.leaderId)
-    .then((leader) => {
+    promoes.findById(req.params.promoId)
+    .then((promo) => {
         res.statusCode =200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(leader)
+        res.json(promo)
     },(err) => next(err))
     .catch((err) => next(err));
 })
@@ -56,16 +56,16 @@ leaderRouter.route('/:leaderId')
     res.end('POST operation not supported');
 })
 .put((req,res,next) => {
-    leaderes.findByIdAndUpdate(req.params.leaderId, { $set :req.body }, {new: true})
-    .then((leader) => {
+    promoes.findByIdAndUpdate(req.params.promoId, { $set :req.body }, {new: true})
+    .then((promo) => {
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(leader);
+        res.json(promo);
     }, (err) => {next(err)})
     .catch((err)=> {next(err)});
 })
 .delete((req,res,next)=> {
-    leaderes.findByIdAndRemove(req.params.leaderId)
+    promoes.findByIdAndRemove(req.params.promoId)
     .then((resp) => {
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
@@ -74,4 +74,4 @@ leaderRouter.route('/:leaderId')
     .catch((err) => next(err));
 })
 
-module.exports=leaderRouter;
+module.exports=promoRouter;
